@@ -1,4 +1,23 @@
+# Screen
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+# Position bounds (existing)
 MAX_XPOS = 100
 MIN_XPOS = -MAX_XPOS
 MAX_YPOS = 100
 MIN_YPOS = -MAX_YPOS
+
+# Physics / limits
+MAX_X_VEL = 5
+MAX_Y_VEL = 5
+MAX_X_ACC = 1
+MAX_Y_ACC = 1
+
+# Rendering
+TARGET_FPS = 60
+BG_COLOR = (255, 255, 255)
+AGENT_COLOR = (0, 0, 255)
+TARGET_COLOR = (255, 0, 0)
+AGENT_RADIUS = 6
+TARGET_RADIUS = 6

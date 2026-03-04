@@ -1,6 +1,7 @@
 import pygame
 
 from state import State
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, BG_COLOR, AGENT_COLOR, TARGET_COLOR, AGENT_RADIUS, TARGET_RADIUS, TARGET_FPS
 
 class View():
     def __init__(self, width, height):
@@ -14,7 +15,7 @@ class View():
 
     def start(self):
         self.running = True
-        TARGET_FPS = 60
+        TARGET_FPS = TARGET_FPS
 
         while self.running:
             # Handle events first
