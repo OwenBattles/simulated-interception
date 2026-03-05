@@ -32,3 +32,6 @@ class Vector():
             return Vector(0, 0)
         scale = magnitude / current_magnitude
         return self * scale
+    
+    def perpendicular(self):
+        return Vector(-self.y, self.x)
