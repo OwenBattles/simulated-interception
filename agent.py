@@ -27,9 +27,12 @@ class Agent(Actor):
         self.pos += self.vel
 
         self.reorient()
+        self.attack()
 
     def get_target_future_pos(self):
-        target = self.state_ref.targets[0] # TODO: handle multiple targets
+        target = self.state_ref.targets[0] if self.state_ref.targets else None # TODO: handle multiple targets
+        if not target:
+            return self.pos + self.vel # Arbitrary point in front of the agent if no targets exist
         target_future_pos = target.pos + target.vel * (self.pos - target.pos).magnitude() / self.max_speed
         return target_future_pos
     
@@ -62,3 +65,9 @@ class Agent(Actor):
         pygame.draw.polygon(screen, self.color, [tip.pair(), left_rear.pair(), right_rear.pair() ])
         self.probe.move()
         self.probe.draw(screen)
+
+    def attack(self):
+        for target in self.state_ref.targets:
+            if self.pos.dist_to(target.pos) < self.length:
+                self.state_ref.targets.remove(target)
+                self.state_ref.actors.remove(target)
