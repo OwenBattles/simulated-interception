@@ -28,10 +28,8 @@ class View():
 
             # Efficient draw
             self.screen.fill((255, 255, 255))
-            for target in self.state.targets:
-                target.draw(self.screen)
-            for agent in self.state.agents:
-                agent.draw(self.screen) 
-            # Flip and cap FPS
+            for a in self.state.actors:
+                a.draw(self.screen)
+  
             pygame.display.flip()
             self.clock.tick(TARGET_FPS)

@@ -17,6 +17,12 @@ class Vector():
     def __truediv__(self, scalar):
         return Vector(self.x / scalar, self.y / scalar)
     
+    def update(self, x=None, y=None):
+        if x is not None:
+            self.x = x
+        if y is not None:
+            self.y = y
+    
     def pair(self):
         return (self.x, self.y)
 

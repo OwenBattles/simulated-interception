@@ -6,7 +6,7 @@ class Target(Actor):
         super().__init__(state_ref)
         self.max_speed = 3.5 # Example max speed, can be adjusted
 
-    def move(self, agent):
+    def move(self):
         # TODO: implement more advanced move logic
         self.pos += self.vel
 
