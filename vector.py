@@ -42,7 +42,19 @@ class Vector():
         scale = magnitude / current_magnitude
         return self * scale
     
+    def normalize(self):
+        mag = self.magnitude()
+        if mag == 0:
+            return Vector(0, 0)
+        return self / mag
+    
     def perpendicular(self):
         return Vector(-self.y, self.x)
+    
+    def dot(self, other):
+        return self.x * other.x + self.y * other.y
+    
+    def dist_to(self, other):
+        return (self - other).magnitude()
     
     

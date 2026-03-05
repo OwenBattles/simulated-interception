@@ -20,3 +20,8 @@ class Actor():
 
     def draw(self, screen):
         pass
+
+    def reorient(self):
+        new_forward = self.vel.set_magnitude(1)
+        new_side = new_forward.perpendicular()
+        self.orientation = [new_forward, new_side]
