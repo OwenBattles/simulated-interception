@@ -1,12 +1,12 @@
 import random
 
-from agent import Agent
+from fleet import Fleet
 from target import Target
 
 class State():
     def __init__(self):
         self.targets = [Target() for _ in range(random.randint(1, 1))] # change to 1 for now, but can increase later
-        self.agents = [Agent() for _ in range(random.randint(2, 2))]
+        self.agents = Fleet(1).agents
     
     def update(self):
         """Update all actors' positions once per frame."""

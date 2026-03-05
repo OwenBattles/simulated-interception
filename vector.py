@@ -16,6 +16,9 @@ class Vector():
 
     def __truediv__(self, scalar):
         return Vector(self.x / scalar, self.y / scalar)
+    
+    def pair(self):
+        return (self.x, self.y)
 
     def magnitude(self):
         return (self.x**2 + self.y**2)**0.5
@@ -35,3 +38,5 @@ class Vector():
     
     def perpendicular(self):
         return Vector(-self.y, self.x)
+    
+    
