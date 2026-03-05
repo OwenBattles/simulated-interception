@@ -6,5 +6,4 @@ class Target(Actor):
 
     def move(self):
         # TODO: implement more advanced move logic
-        self.x_pos += self.x_vel
-        self.y_pos += self.y_vel
+        self.pos += self.vel

@@ -15,7 +15,6 @@ class View():
 
     def start(self):
         self.running = True
-        TARGET_FPS = TARGET_FPS
 
         while self.running:
             # Handle events first
@@ -29,9 +28,9 @@ class View():
             # Efficient draw
             self.screen.fill((255, 255, 255))
             for target in self.state.targets:
-                pygame.draw.circle(self.screen, (255, 0, 0), (int(target.x_pos), int(target.y_pos)), 6)
+                pygame.draw.circle(self.screen, (255, 0, 0), (int(target.pos.x), int(target.pos.y)), 6)
             for agent in self.state.agents:
-                pygame.draw.circle(self.screen, (0, 0, 255), (int(agent.x_pos), int(agent.y_pos)), 6)
+                pygame.draw.circle(self.screen, (0, 0, 255), (int(agent.pos.x), int(agent.pos.y)), 6)
 
             # Flip and cap FPS
             pygame.display.flip()
