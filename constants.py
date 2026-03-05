@@ -1,6 +1,6 @@
 # Screen
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1500
+SCREEN_HEIGHT = 1000
 
 # Position bounds (existing)
 MAX_XPOS = 100
@@ -9,8 +9,8 @@ MAX_YPOS = 100
 MIN_YPOS = -MAX_YPOS
 
 # Physics / limits
-MAX_X_VEL = 5
-MAX_Y_VEL = 5
+MAX_X_VEL = 2
+MAX_Y_VEL = 2
 MAX_X_ACC = 1
 MAX_Y_ACC = 1
 

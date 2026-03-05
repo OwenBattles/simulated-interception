@@ -9,6 +9,10 @@ class Actor():
         self.pos = Vector(random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT))
         self.vel = Vector(random.randint(-MAX_X_VEL, MAX_X_VEL), random.randint(-MAX_Y_VEL, MAX_Y_VEL))
         self.acc = Vector(random.randint(-MAX_X_ACC, MAX_X_ACC), random.randint(-MAX_Y_ACC, MAX_Y_ACC))
+        self.max_speed = Vector()
+        self.max_force = Vector()
+        self.orientation = Vector()
+        self.mass = Vector()
 
     def move(self):
         pass
