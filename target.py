@@ -11,7 +11,7 @@ class Target(Actor):
         super().__init__(state_ref)
         self.max_speed = 3.5 
         self.length = 10
-        self.probe = Circle(self.state_ref, self) 
+        self.probe = Circle(self, self.state_ref, self.probe_distance)
         self.theta_range = 0.1 
         self.theta = 0
 

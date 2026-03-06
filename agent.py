@@ -9,7 +9,9 @@ class Agent(Actor):
         self.length = 20
         self.width = 10
         self.color = (0, 0, 255)
-        self.probe = Circle(self.state_ref, self) # Circle used for collision detection
+        self.probe_distance = 50 # Distance in front of the agent where the probe is located
+        self.probe = Circle(self, self.state_ref, self.probe_distance) # Circle used for collision detection
+         
 
     def move(self):
         desired_direction = self.get_target_future_pos() - self.pos
