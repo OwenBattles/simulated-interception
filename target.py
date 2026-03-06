@@ -16,7 +16,7 @@ class Target(Actor):
         self.theta = 0
 
     def move(self):
-        forward_vec = self.orientation[0]
+        forward_vec = self.forward_vec       
         self.theta += random.uniform(-self.theta_range, self.theta_range)
         
         circle_center = self.pos + forward_vec * 50

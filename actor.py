@@ -14,7 +14,8 @@ class Actor():
         self.length = 0
         self.max_speed = 5
         self.max_force = 4
-        self.orientation = [Vector(1, 0), Vector(0, 1)]
+        self.forward_vec = Vector(1, 0)
+        self.side_vec = Vector(0, 1)
 
     def move(self):
         pass
@@ -23,6 +24,5 @@ class Actor():
         pass
 
     def reorient(self):
-        new_forward = self.vel.set_magnitude(1)
-        new_side = new_forward.perpendicular()
-        self.orientation = [new_forward, new_side]
+        self.forward_vec = self.vel.set_magnitude(1)
+        self.side_vec = self.forward_vec.perpendicular()

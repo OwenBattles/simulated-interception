@@ -46,21 +46,21 @@ class Agent(Actor):
                     most_threatening = obstacle
 
         if most_threatening:
-            dot_product = self.orientation[1].dot(most_threatening.pos - self.pos)
+            dot_product = self.side_vec.dot(most_threatening.pos - self.pos)
             side_steer = -1 if dot_product > 0 else 1
             
             braking_weight = 0.2 # TODO: make this dynamic or a constant
-            avoidance_force = self.orientation[1] * side_steer * self.max_force
-            avoidance_force -= self.orientation[0] * braking_weight
+            avoidance_force = self.side_vec * side_steer * self.max_force
+            avoidance_force -= self.forward_vec * braking_weight
             
             return avoidance_force
     
         return Vector(0, 0)
 
     def draw(self, screen):
-        tip = self.pos + self.orientation[0] * self.length
-        left_rear = self.pos - self.orientation[0] * self.length + self.orientation[1] * self.width
-        right_rear = self.pos - self.orientation[0] * self.length - self.orientation[1] * self.width
+        tip = self.pos + self.forward_vec * self.length
+        left_rear = self.pos - self.forward_vec * self.length + self.side_vec * self.width
+        right_rear = self.pos - self.forward_vec * self.length - self.side_vec * self.width
 
         pygame.draw.polygon(screen, self.color, [tip.pair(), left_rear.pair(), right_rear.pair() ])
         self.probe.move()
