@@ -42,7 +42,7 @@ class Agent(Actor):
         
         for obstacle in self.state_ref.obstacles:
             if self.probe.intersects_obstacle(obstacle):
-                if most_threatening is None or self.dist_to(obstacle) < self.dist_to(most_threatening):
+                if most_threatening is None or self.pos.dist_to(obstacle) < self.pos.dist_to(most_threatening):
                     most_threatening = obstacle
 
         if most_threatening:

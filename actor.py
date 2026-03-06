@@ -10,7 +10,8 @@ class Actor():
         self.pos = Vector(random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT))
         self.vel = Vector(random.randint(-MAX_X_VEL, MAX_X_VEL), random.randint(-MAX_Y_VEL, MAX_Y_VEL))
         self.acc = Vector(random.randint(-MAX_X_ACC, MAX_X_ACC), random.randint(-MAX_Y_ACC, MAX_Y_ACC))
-        self.mass = 15
+        self.mass = 10
+        self.length = 0
         self.max_speed = 5
         self.max_force = 4
         self.orientation = [Vector(1, 0), Vector(0, 1)]

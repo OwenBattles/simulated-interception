@@ -1,3 +1,5 @@
+import math
+
 from constants import MAX_XPOS, MAX_YPOS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Vector():
@@ -56,5 +58,13 @@ class Vector():
     
     def dist_to(self, other):
         return (self - other).magnitude()
+    
+    def rotate(self, angle):
+        cos_theta = math.cos(angle)
+        sin_theta = math.sin(angle)
+        return Vector(
+            self.x * cos_theta - self.y * sin_theta,
+            self.x * sin_theta + self.y * cos_theta
+        )
     
     

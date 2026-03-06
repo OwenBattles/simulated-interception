@@ -19,3 +19,4 @@ class Circle(Actor):
     def intersects_obstacle(self, obstacle):
         distance = (self.pos - obstacle.pos).magnitude()
         return distance < self.radius + obstacle.size
+    
