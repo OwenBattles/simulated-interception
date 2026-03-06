@@ -16,6 +16,8 @@ class Actor():
         self.max_force = 4
         self.forward_vec = Vector(1, 0)
         self.side_vec = Vector(0, 1)
+        self.probe_distance = 0
+        self.probe = None
 
     def move(self):
         pass
@@ -26,3 +28,24 @@ class Actor():
     def reorient(self):
         self.forward_vec = self.vel.set_magnitude(1)
         self.side_vec = self.forward_vec.perpendicular()
+
+    def calculate_obstacle_avoidance(self):
+            most_threatening = None
+            self.probe.pos = self.pos + self.vel.normalize() * self.probe.radius
+            
+            for obstacle in self.state_ref.obstacles:
+                if self.probe.intersects_obstacle(obstacle):
+                    if most_threatening is None or self.pos.dist_to(obstacle) < self.pos.dist_to(most_threatening):
+                        most_threatening = obstacle
+
+            if most_threatening:
+                dot_product = self.side_vec.dot(most_threatening.pos - self.pos)
+                side_steer = -1 if dot_product > 0 else 1
+                
+                braking_weight = 0.2 # TODO: make this dynamic or a constant
+                avoidance_force = self.side_vec * side_steer * self.max_force
+                avoidance_force -= self.forward_vec * braking_weight
+                
+                return avoidance_force
+        
+            return Vector(0, 0)

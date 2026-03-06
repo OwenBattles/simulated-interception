@@ -6,11 +6,14 @@ from actor import Actor
 from circle import Circle
 from vector import Vector
 
+from constants import BORDER_BUFFER
+
 class Target(Actor):
     def __init__(self, state_ref):
         super().__init__(state_ref)
         self.max_speed = 3.5 
         self.length = 10
+        self.probe_distance = 30
         self.probe = Circle(self, self.state_ref, self.probe_distance)
         self.theta_range = 0.1 
         self.theta = 0
@@ -39,9 +42,25 @@ class Target(Actor):
         self.vel = (self.vel + self.acc).truncate(self.max_speed)
         self.pos += self.vel
         
+        if self.encounter_border():
+            print("Target encountered border, adjusting course.")
         self.reorient()
 
     def draw(self, screen):
         pygame.draw.circle(screen, (255, 0, 0), (int(self.pos.x), int(self.pos.y)), 10)
         self.probe.move()
         self.probe.draw(screen)
+
+    def encounter_border(self):
+        if self.pos.x < 0:
+            self.pos.x = 0
+            self.vel.x *= -1
+        elif self.pos.x > 800:
+            self.pos.x = 800
+            self.vel.x *= -1
+        if self.pos.y < 0:
+            self.pos.y = 0
+            self.vel.y *= -1
+        elif self.pos.y > 600:
+            self.pos.y = 600
+            self.vel.y *= -1
