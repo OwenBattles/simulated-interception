@@ -49,7 +49,9 @@ class Agent(Actor):
         self.probe.draw(screen)
 
     def attack(self):
-        for target in self.state_ref.targets:
-            if self.pos.dist_to(target.pos) < self.length:
-                self.state_ref.targets.remove(target)
-                self.state_ref.actors.remove(target)
+        hit = [t for t in self.state_ref.targets if self.pos.dist_to(t.pos) < self.length]
+        for t in hit:
+            if t in self.state_ref.targets:
+                self.state_ref.targets.remove(t)
+            if t in self.state_ref.actors:
+                self.state_ref.actors.remove(t)

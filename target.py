@@ -1,5 +1,4 @@
 import pygame
-import random
 import math
 
 from actor import Actor
@@ -20,7 +19,7 @@ class Target(Actor):
 
     def move(self):
         forward_vec = self.forward_vec       
-        self.theta += random.uniform(-self.theta_range, self.theta_range)
+        self.theta += self._rng.uniform(-self.theta_range, self.theta_range)
         
         circle_center = self.pos + forward_vec * 50
         
@@ -52,15 +51,16 @@ class Target(Actor):
         self.probe.draw(screen)
 
     def encounter_border(self):
+        w, h = self.state_ref.width, self.state_ref.height
         if self.pos.x < 0:
             self.pos.x = 0
             self.vel.x *= -1
-        elif self.pos.x > 800:
-            self.pos.x = 800
+        elif self.pos.x > w:
+            self.pos.x = w
             self.vel.x *= -1
         if self.pos.y < 0:
             self.pos.y = 0
             self.vel.y *= -1
-        elif self.pos.y > 600:
-            self.pos.y = 600
+        elif self.pos.y > h:
+            self.pos.y = h
             self.vel.y *= -1

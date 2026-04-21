@@ -1,14 +1,18 @@
 import pygame
-import random
 
 from actor import Actor
-from constants import MAX_OBSTACLE_RADIUS, MIN_OBSTACLE_RADIUS, SCREEN_HEIGHT, SCREEN_WIDTH
+from constants import MAX_OBSTACLE_RADIUS, MIN_OBSTACLE_RADIUS
+
 
 class Obstacle(Actor):
     def __init__(self, state_ref):
         super().__init__(state_ref)
-        self.size = random.randint(MIN_OBSTACLE_RADIUS, MAX_OBSTACLE_RADIUS)
-        self.pos.update(random.randint(self.size, SCREEN_WIDTH - self.size), random.randint(self.size, SCREEN_HEIGHT - self.size))
+        self.size = self._rng.randint(MIN_OBSTACLE_RADIUS, MAX_OBSTACLE_RADIUS)
+        w, h = state_ref.width, state_ref.height
+        self.pos.update(
+            self._rng.randint(self.size, w - self.size),
+            self._rng.randint(self.size, h - self.size),
+        )
         self.color = (128, 128, 128)
 
     def move(self):

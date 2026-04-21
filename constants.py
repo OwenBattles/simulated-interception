@@ -1,6 +1,11 @@
-# Screen
+# Screen / world bounds (single source of truth for 2D extent)
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 1000
+
+# Simulation clock (one integration tick ≈ this duration; motion is per-tick today)
+SIM_DT = 1.0 / 60.0
+# Headless runs stop after this many steps unless overridden (0 = no limit)
+DEFAULT_HEADLESS_MAX_STEPS = 10_000
 
 # Position bounds (existing)
 MAX_XPOS = 100
