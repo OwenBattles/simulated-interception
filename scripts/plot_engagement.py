@@ -17,15 +17,24 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
 
 from interception.simulation import Simulation, SimulationConfig  # noqa: E402
 
-STYLE = """
-  .obstacle { fill: #d8d8d8; stroke: #b4b4b4; stroke-width: 2; }
-  .agent-path { fill: none; stroke: #1d4ed8; stroke-width: 3; }
-  .target-path { fill: none; stroke: #dc2626; stroke-width: 3; stroke-dasharray: 8 6; }
-  .start { stroke-width: 2; }
-  .intercept { fill: none; stroke: #111; stroke-width: 3; }
-  .label { font: 22px ui-monospace, monospace; fill: #111; }
-  .caption { font: 20px ui-monospace, monospace; fill: #555; }
-"""
+MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+
+# Styling is inlined as presentation attributes rather than a <style> block.
+# GitHub sanitises SVGs embedded in markdown and strips <style>, which would
+# render the README figure as unstyled black shapes.
+STYLES = {
+    "obstacle": 'fill="#d8d8d8" stroke="#b4b4b4" stroke-width="2"',
+    "agent-path": 'fill="none" stroke="#1d4ed8" stroke-width="3"',
+    "target-path": 'fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 6"',
+    "agent-start": 'fill="#1d4ed8" stroke="#ffffff" stroke-width="2"',
+    "target-start": 'fill="#dc2626" stroke="#ffffff" stroke-width="2"',
+    "intercept": 'fill="none" stroke="#111111" stroke-width="3"',
+    "label": f'font-family="{MONO}" font-size="22" fill="#111111"',
+    "caption": f'font-family="{MONO}" font-size="20" fill="#555555"',
+}
+
+HEADER_H = 74
+FOOTER_H = 40
 
 
 def record(seed, max_steps):
@@ -46,13 +55,17 @@ def record(seed, max_steps):
     return sim, agent_paths, target_paths
 
 
-def polyline(points, css_class):
+def polyline(points, style):
     coords = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
-    return f'  <polyline class="{css_class}" points="{coords}" />'
+    return f'  <polyline {STYLES[style]} points="{coords}" />'
 
 
-HEADER_H = 74
-FOOTER_H = 40
+def circle(x, y, r, style):
+    return f'  <circle {STYLES[style]} cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}" />'
+
+
+def text(x, y, style, body):
+    return f'  <text {STYLES[style]} x="{x:.0f}" y="{y:.0f}">{body}</text>'
 
 
 def to_svg(sim, agent_paths, target_paths):
@@ -62,43 +75,44 @@ def to_svg(sim, agent_paths, target_paths):
     obs = sim.observation()
     miss = obs["min_miss_distance_m"]
 
-    # Text lives in its own bands above and below the world so labels never
-    # sit on top of the trajectories.
+    # Text lives in bands above and below the world so labels never sit on
+    # top of the trajectories.
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.0f} {total_h:.0f}" '
         f'width="{w:.0f}" height="{total_h:.0f}" role="img">',
-        f"  <style>{STYLE}</style>",
-        f'  <rect width="{w:.0f}" height="{total_h:.0f}" fill="#fff" />',
-        f'  <text class="label" x="16" y="32">seed {obs["seed"]} &#183; '
-        f'{obs["end_reason"]} in {obs["elapsed_s"]:.2f} s &#183; '
-        f'miss {miss:.2f} m &#183; &#916;v {obs["delta_v_mps"]:.0f} m/s</text>',
-        '  <text class="caption" x="16" y="60">'
-        "blue = interceptor &#183; red dashed = evader &#183; "
-        "grey = keep-out volumes &#183; ring = intercept</text>",
-        f'  <text class="caption" x="16" y="{total_h - 14:.0f}">'
-        f"{w:.0f} m &#215; {h:.0f} m engagement box</text>",
+        f'  <rect width="{w:.0f}" height="{total_h:.0f}" fill="#ffffff" />',
+        text(
+            16,
+            32,
+            "label",
+            f'seed {obs["seed"]} &#183; {obs["end_reason"]} in '
+            f'{obs["elapsed_s"]:.2f} s &#183; miss {miss:.2f} m &#183; '
+            f'&#916;v {obs["delta_v_mps"]:.0f} m/s',
+        ),
+        text(
+            16,
+            60,
+            "caption",
+            "blue = interceptor &#183; red dashed = evader &#183; "
+            "grey = keep-out volumes &#183; ring = intercept",
+        ),
+        text(16, total_h - 14, "caption", f"{w:.0f} m &#215; {h:.0f} m engagement box"),
         f'  <g transform="translate(0 {HEADER_H})">',
-        f'  <rect width="{w:.0f}" height="{h:.0f}" fill="#fff" '
+        f'  <rect width="{w:.0f}" height="{h:.0f}" fill="#ffffff" '
         'stroke="#e2e2e2" stroke-width="2" />',
     ]
 
     for o in state.obstacles:
-        parts.append(
-            f'  <circle class="obstacle" cx="{o.pos.x:.1f}" cy="{o.pos.y:.1f}" '
-            f'r="{o.radius_m:.1f}" />'
-        )
+        parts.append(circle(o.pos.x, o.pos.y, o.radius_m, "obstacle"))
 
     for path in target_paths:
         parts.append(polyline(path, "target-path"))
-        x, y = path[0]
-        parts.append(f'  <circle class="start" cx="{x:.1f}" cy="{y:.1f}" r="9" fill="#dc2626" />')
-        ix, iy = path[-1]
-        parts.append(f'  <circle class="intercept" cx="{ix:.1f}" cy="{iy:.1f}" r="20" />')
+        parts.append(circle(path[0][0], path[0][1], 9, "target-start"))
+        parts.append(circle(path[-1][0], path[-1][1], 20, "intercept"))
 
     for path in agent_paths:
         parts.append(polyline(path, "agent-path"))
-        x, y = path[0]
-        parts.append(f'  <circle class="start" cx="{x:.1f}" cy="{y:.1f}" r="9" fill="#1d4ed8" />')
+        parts.append(circle(path[0][0], path[0][1], 9, "agent-start"))
 
     parts += ["  </g>", "</svg>"]
     return "\n".join(parts) + "\n"
