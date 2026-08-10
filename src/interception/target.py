@@ -2,18 +2,12 @@ import math
 
 from .actor import Actor
 from .constants import (
-    PROBE_RADIUS_M,
-    TARGET_HIT_RADIUS_M,
-    TARGET_MASS_KG,
-    TARGET_MAX_FORCE_N,
-    TARGET_MAX_SPEED_MPS,
-    TARGET_PROBE_LOOKAHEAD_S,
     TARGET_WANDER_CIRCLE_DIST_M,
     TARGET_WANDER_CIRCLE_RADIUS_M,
     TARGET_WANDER_MAX_RAD,
     TARGET_WANDER_SIGMA_RAD_PER_SQRT_S,
 )
-from .sensor import Probe
+from .params import default_target
 from .vector import Vector
 
 
@@ -30,15 +24,8 @@ class Target(Actor):
     This target is non-adversarial: it does not react to being chased.
     """
 
-    def __init__(self, state_ref):
-        super().__init__(
-            state_ref,
-            mass=TARGET_MASS_KG,
-            max_speed=TARGET_MAX_SPEED_MPS,
-            max_force=TARGET_MAX_FORCE_N,
-            hit_radius_m=TARGET_HIT_RADIUS_M,
-            probe=Probe(TARGET_PROBE_LOOKAHEAD_S, PROBE_RADIUS_M),
-        )
+    def __init__(self, state_ref, params=None):
+        super().__init__(state_ref, params or default_target())
         self.wander_angle = 0.0
 
     def steering_force_at(self, dt):

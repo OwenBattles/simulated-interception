@@ -19,9 +19,12 @@ flight-representative.
 
 | Assumption | Detail | Cost of lifting |
 | --- | --- | --- |
-| Perfect state knowledge | The interceptor reads exact target position and velocity from world state. No noise, no latency, no dropouts. | This is the single largest gap. Needs a measurement model plus an estimator (EKF) on the interceptor. |
+| Perfect state knowledge | The interceptor reads exact target position and velocity from world state. No noise, no latency, no dropouts. LOS rate is therefore computed analytically rather than measured, which is the quantity a real seeker works hardest to estimate. | This is the single largest gap. Needs a measurement model plus an estimator (EKF) on the interceptor. |
+| Observable target acceleration | Augmented PN feeds forward `N/2` of the target's LOS-normal acceleration, read directly from the target object. Real APN must estimate it. | Follows from perfect state knowledge; lifting that lifts this. |
 | Unlimited detection range | Every target is visible from anywhere in the box. No seeker field-of-view or acquisition range. | Small: a range/FOV gate on `current_target`. |
-| First-order lead pursuit | Time-to-go is estimated as `range / interceptor max speed`, which is exact head-on and degrades in a crossing geometry. | Small, and it is the next planned change: proportional navigation. |
+| No seeker dynamics | Guidance sees LOS rate instantaneously and exactly. No gimbal limits, tracking-loop lag, radome refraction, or glint. | Moderate: a second-order seeker model in front of the guidance law. |
+| Lateral-only guidance | Guidance laws command turn only. Whatever force budget the turn leaves over is spent closing to top speed, with turning given priority. Real interceptors do not throttle this way. | Small: a thrust profile with a propellant budget. |
+| PN gates on closure | With negative closing velocity the PN command reverses sign, so the law falls back to pure pursuit until closure is re-established. | Intentional, and what real seekers do; worth revisiting with a proper reacquisition mode. |
 | Nearest-target selection | Each interceptor independently chases the closest target, so several can converge on the same one. | Small: a fleet-level assignment step. |
 | Non-adversarial evader | The target flies a random-walk wander and never reacts to being chased. | Small in code, large in what it changes: this is why success rate currently sits at 100%. |
 | Avoidance overrides pursuit | Any obstacle in probe range fully replaces the pursuit command rather than blending with it. | Small: weighted blending or a velocity-obstacle formulation. |

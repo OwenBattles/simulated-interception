@@ -1,8 +1,11 @@
 import argparse
 import json
+import pathlib
 import statistics
 
-from .constants import DEFAULT_HEADLESS_MAX_STEPS, WORLD_HEIGHT_M, WORLD_WIDTH_M
+from .constants import DEFAULT_HEADLESS_MAX_STEPS
+from .guidance import LAWS
+from .params import GuidanceParams, ScenarioParams
 from .simulation import EpisodeEnd, Simulation, SimulationConfig, run_headless
 
 
@@ -31,10 +34,28 @@ def build_parser():
     parser.add_argument("--agents", type=int, default=1, help="number of interceptors")
     parser.add_argument("--targets", type=int, default=1, help="number of targets")
     parser.add_argument(
+        "--guidance",
+        choices=sorted(LAWS),
+        default="pn",
+        help="interceptor guidance law (default: pn)",
+    )
+    parser.add_argument(
+        "--nav-constant",
+        type=float,
+        default=4.0,
+        help="navigation constant N for pn/apn (default: 4.0; 3-5 is typical)",
+    )
+    parser.add_argument(
         "--trials",
         type=int,
         default=0,
         help="run N headless episodes on seeds [seed, seed+N) and print aggregates",
+    )
+    parser.add_argument(
+        "--record",
+        type=pathlib.Path,
+        default=None,
+        help="write per-step telemetry for a single run to this JSON path",
     )
     parser.add_argument(
         "--json", action="store_true", help="emit machine-readable JSON output"
@@ -42,24 +63,22 @@ def build_parser():
     return parser
 
 
-def run_batch(args):
-    """Sweep consecutive seeds and summarise the engagement statistics."""
-    base_seed = 0 if args.seed is None else args.seed
-    episodes = []
-    for offset in range(args.trials):
-        sim = run_headless(
-            seed=base_seed + offset,
-            max_steps=args.max_steps,
-            num_agents=args.agents,
-            num_targets=args.targets,
-        )
-        episodes.append(sim.observation())
+def scenario_from(args):
+    return ScenarioParams(
+        num_agents=args.agents,
+        num_targets=args.targets,
+        guidance=GuidanceParams(law=args.guidance, nav_constant=args.nav_constant),
+    )
 
+
+def summarise(episodes):
     successes = [e for e in episodes if e["end_reason"] == EpisodeEnd.SUCCESS.value]
-    misses = [e["min_miss_distance_m"] for e in episodes if e["min_miss_distance_m"] is not None]
-    summary = {
+    misses = [
+        e["min_miss_distance_m"] for e in episodes if e["min_miss_distance_m"] is not None
+    ]
+    return {
         "trials": len(episodes),
-        "seeds": [base_seed, base_seed + args.trials - 1],
+        "guidance": episodes[0]["guidance"] if episodes else None,
         "success_rate": round(len(successes) / len(episodes), 4) if episodes else 0.0,
         "mean_time_to_intercept_s": (
             round(statistics.fmean(e["elapsed_s"] for e in successes), 3)
@@ -71,9 +90,7 @@ def run_batch(args):
             if successes
             else None
         ),
-        "mean_min_miss_distance_m": (
-            round(statistics.fmean(misses), 4) if misses else None
-        ),
+        "mean_min_miss_distance_m": round(statistics.fmean(misses), 4) if misses else None,
         "mean_delta_v_mps": (
             round(statistics.fmean(e["delta_v_mps"] for e in episodes), 2)
             if episodes
@@ -81,11 +98,26 @@ def run_batch(args):
         ),
     }
 
+
+def run_batch(args):
+    """Sweep consecutive seeds and summarise the engagement statistics."""
+    base_seed = 0 if args.seed is None else args.seed
+    scenario = scenario_from(args)
+    episodes = [
+        run_headless(
+            seed=base_seed + offset, max_steps=args.max_steps, scenario=scenario
+        ).observation()
+        for offset in range(args.trials)
+    ]
+    summary = summarise(episodes)
+
     if args.json:
         print(json.dumps({"summary": summary, "episodes": episodes}, indent=2))
         return
 
-    print(f"trials                  {summary['trials']} (seeds {base_seed}..{base_seed + args.trials - 1})")
+    last_seed = base_seed + args.trials - 1
+    print(f"guidance                {summary['guidance']}")
+    print(f"trials                  {summary['trials']} (seeds {base_seed}..{last_seed})")
     print(f"success rate            {summary['success_rate'] * 100:.1f}%")
     print(f"mean time to intercept  {_fmt(summary['mean_time_to_intercept_s'], 's')}")
     print(f"median t.t.i.           {_fmt(summary['median_time_to_intercept_s'], 's')}")
@@ -101,20 +133,28 @@ def run_single(args):
     sim = run_headless(
         seed=args.seed,
         max_steps=args.max_steps,
-        num_agents=args.agents,
-        num_targets=args.targets,
+        scenario=scenario_from(args),
+        record_telemetry=args.record is not None,
     )
     obs = sim.observation()
+
+    if args.record is not None:
+        args.record.parent.mkdir(parents=True, exist_ok=True)
+        sim.telemetry.write_json(sim, args.record)
+
     if args.json:
         print(json.dumps(obs, indent=2))
         return
+
     miss = obs["min_miss_distance_m"]
     print(
-        f"reason={obs['end_reason']} seed={obs['seed']} steps={obs['step']} "
-        f"t={obs['elapsed_s']}s intercepts={obs['intercepts']} "
+        f"guidance={obs['guidance']} reason={obs['end_reason']} seed={obs['seed']} "
+        f"steps={obs['step']} t={obs['elapsed_s']}s intercepts={obs['intercepts']} "
         f"min_miss={'n/a' if miss is None else f'{miss} m'} "
         f"delta_v={obs['delta_v_mps']} m/s"
     )
+    if args.record is not None:
+        print(f"telemetry -> {args.record} ({len(sim.telemetry.frames)} frames)")
 
 
 def main(argv=None):
@@ -123,7 +163,7 @@ def main(argv=None):
     if args.trials > 0:
         run_batch(args)
         return
-    if args.headless:
+    if args.headless or args.record is not None:
         run_single(args)
         return
 
@@ -131,12 +171,9 @@ def main(argv=None):
     from .view import View
 
     cfg = SimulationConfig(
-        world_width=WORLD_WIDTH_M,
-        world_height=WORLD_HEIGHT_M,
         max_steps=0,  # interactive runs never time out
         seed=args.seed,
-        num_agents=args.agents,
-        num_targets=args.targets,
+        scenario=scenario_from(args),
     )
     View(Simulation(cfg)).start()
 

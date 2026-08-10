@@ -2,6 +2,7 @@ import sys
 
 import pytest
 
+from interception.params import ScenarioParams
 from interception.simulation import (
     EpisodeEnd,
     Simulation,
@@ -87,6 +88,7 @@ def test_observation_is_json_friendly():
     obs = run_headless(seed=0, max_steps=5_000).observation()
     expected = {
         "seed",
+        "guidance",
         "step",
         "elapsed_s",
         "done",
@@ -106,6 +108,28 @@ def test_observation_is_json_friendly():
 
 
 def test_multi_agent_multi_target_engagement_runs():
-    sim = run_headless(seed=4, max_steps=5_000, num_agents=3, num_targets=2)
+    sim = run_headless(
+        seed=4,
+        max_steps=5_000,
+        scenario=ScenarioParams(num_agents=3, num_targets=2),
+    )
     assert len(sim.state.agents) == 3
     assert sim.done
+
+
+def test_telemetry_is_opt_in_and_captures_every_step():
+    plain = run_headless(seed=0, max_steps=200)
+    assert plain.telemetry is None
+
+    recorded = run_headless(seed=0, max_steps=200, record_telemetry=True)
+    assert len(recorded.telemetry.frames) == recorded.steps
+    # Recording must not perturb the trajectory it is observing.
+    assert recorded.observation() == plain.observation()
+
+
+def test_telemetry_series_extracts_a_guidance_column():
+    sim = run_headless(seed=0, max_steps=300, record_telemetry=True)
+    series = sim.telemetry.series("los_rate_rad_s")
+    assert series
+    times = [t for t, _ in series]
+    assert times == sorted(times)

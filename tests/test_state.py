@@ -1,6 +1,7 @@
 import pytest
 
 from interception.constants import SIM_DT
+from interception.params import ScenarioParams
 from interception.state import State
 
 
@@ -50,7 +51,7 @@ def test_simultaneous_intercepts_all_resolve(place):
     Two targets destroyed on the same tick must both be removed, and every
     surviving actor must still have advanced.
     """
-    state = State(seed=3, num_agents=1, num_targets=3)
+    state = State(seed=3, scenario=ScenarioParams(num_agents=1, num_targets=3))
     agent = state.agents[0]
     doomed = state.targets[:2]
     survivor = state.targets[2]

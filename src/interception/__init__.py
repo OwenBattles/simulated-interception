@@ -9,23 +9,40 @@ imported only when a window is actually requested.
 
 from .agent import Agent
 from .fleet import Fleet
+from .guidance import (
+    AugmentedProportionalNavigation,
+    LeadPursuit,
+    ProportionalNavigation,
+    PurePursuit,
+    make_guidance,
+)
 from .obstacle import Obstacle
+from .params import GuidanceParams, ScenarioParams, VehicleParams
 from .simulation import EpisodeEnd, Simulation, SimulationConfig, run_headless
 from .state import State
 from .target import Target
+from .telemetry import TelemetryRecorder
 from .vector import Vector
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "Agent",
+    "AugmentedProportionalNavigation",
     "EpisodeEnd",
     "Fleet",
+    "GuidanceParams",
+    "LeadPursuit",
     "Obstacle",
+    "ProportionalNavigation",
+    "PurePursuit",
+    "ScenarioParams",
     "Simulation",
     "SimulationConfig",
     "State",
     "Target",
+    "TelemetryRecorder",
     "Vector",
-    "run_headless",
+    "VehicleParams",
+    "make_guidance",
 ]

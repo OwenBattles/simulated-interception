@@ -1,6 +1,7 @@
 import math
 
 from .constants import AVOIDANCE_BRAKING_WEIGHT
+from .sensor import Probe
 from .vector import Vector
 
 
@@ -13,16 +14,9 @@ class Actor:
     rendering lives entirely in :mod:`interception.render`.
     """
 
-    def __init__(
-        self,
-        state_ref,
-        mass,
-        max_speed,
-        max_force,
-        hit_radius_m,
-        probe=None,
-    ):
+    def __init__(self, state_ref, params, use_probe=True):
         self.state_ref = state_ref
+        self.params = params
         rng = state_ref.rng
 
         self.pos = Vector(
@@ -30,15 +24,23 @@ class Actor:
             rng.uniform(0.0, state_ref.height),
         )
         heading = rng.uniform(-math.pi, math.pi)
-        self.vel = Vector.from_polar(rng.uniform(0.25, 1.0) * max_speed, heading)
+        self.vel = Vector.from_polar(
+            rng.uniform(0.25, 1.0) * params.max_speed_mps, heading
+        )
         self.acc = Vector()
         self.steering_force = Vector()
 
-        self.mass = mass
-        self.max_speed = max_speed
-        self.max_force = max_force
-        self.hit_radius_m = hit_radius_m
-        self.probe = probe
+        # Mirrored onto the instance because guidance laws and the renderer
+        # read them every tick.
+        self.mass = params.mass_kg
+        self.max_speed = params.max_speed_mps
+        self.max_force = params.max_force_n
+        self.hit_radius_m = params.hit_radius_m
+        self.probe = (
+            Probe(params.probe_lookahead_s, params.probe_radius_m)
+            if use_probe
+            else None
+        )
 
         self.forward_vec = Vector.from_polar(1.0, heading)
         self.side_vec = self.forward_vec.perpendicular()

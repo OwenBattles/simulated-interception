@@ -2,14 +2,9 @@ import math
 import random
 
 from .collision import swept_hit
-from .constants import (
-    MAX_OBSTACLE_COUNT,
-    MIN_OBSTACLE_COUNT,
-    WORLD_HEIGHT_M,
-    WORLD_WIDTH_M,
-)
 from .fleet import Fleet
 from .obstacle import Obstacle
+from .params import ScenarioParams
 from .target import Target
 
 
@@ -21,18 +16,10 @@ class State:
     without an SDL surface.
     """
 
-    def __init__(
-        self,
-        seed,
-        width=None,
-        height=None,
-        num_agents=1,
-        num_targets=1,
-    ):
-        self.width = WORLD_WIDTH_M if width is None else float(width)
-        self.height = WORLD_HEIGHT_M if height is None else float(height)
-        self.num_agents = num_agents
-        self.num_targets = num_targets
+    def __init__(self, seed, scenario=None):
+        self.scenario = scenario or ScenarioParams()
+        self.width = self.scenario.world_width_m
+        self.height = self.scenario.world_height_m
 
         # A concrete seed is required. Callers that want an arbitrary world
         # draw a seed first and record it, so every run stays reproducible.
@@ -49,10 +36,11 @@ class State:
         self._build_world()
 
     def _build_world(self):
-        n_obstacles = self.rng.randint(MIN_OBSTACLE_COUNT, MAX_OBSTACLE_COUNT)
+        cfg = self.scenario
+        n_obstacles = self.rng.randint(cfg.min_obstacles, cfg.max_obstacles)
         self.obstacles = [Obstacle(self) for _ in range(n_obstacles)]
-        self.targets = [Target(self) for _ in range(self.num_targets)]
-        self.fleet = Fleet(self.num_agents, self)
+        self.targets = [Target(self, cfg.target) for _ in range(cfg.num_targets)]
+        self.fleet = Fleet(cfg.num_agents, self, cfg.interceptor, cfg.guidance)
         self.agents = list(self.fleet.agents)
         # Obstacles are static, so they are not actors and never step.
         self.actors = self.agents + self.targets
@@ -74,9 +62,9 @@ class State:
     def update(self, dt):
         for actor in self.actors:
             actor.step(dt)
-        self._resolve_intercepts(dt)
+        self._resolve_intercepts()
 
-    def _resolve_intercepts(self, dt):
+    def _resolve_intercepts(self):
         """
         Swept-sphere test over every agent/target pair for this step.
 

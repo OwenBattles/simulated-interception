@@ -9,18 +9,20 @@ made the vehicles fly twice as fast. These tests pin the fix.
 import pytest
 
 from interception.actor import Actor
+from interception.params import VehicleParams
 from interception.vector import Vector
 
 
-def make_actor(fake_state, **kwargs):
-    params = dict(
-        mass=5.0,
-        max_speed=120.0,
-        max_force=1000.0,
+def make_actor(fake_state, **overrides):
+    fields = dict(
+        mass_kg=5.0,
+        max_speed_mps=120.0,
+        max_force_n=1000.0,
         hit_radius_m=2.0,
+        probe_lookahead_s=0.8,
     )
-    params.update(kwargs)
-    return Actor(fake_state, **params)
+    fields.update(overrides)
+    return Actor(fake_state, VehicleParams(**fields))
 
 
 def integrate_for(actor, force, duration_s, dt):
@@ -74,14 +76,14 @@ def test_position_error_under_constant_force_shrinks_with_timestep(fake_state, p
 
 
 def test_force_is_clamped_to_the_airframe_limit(fake_state, place):
-    actor = place(make_actor(fake_state, max_force=1000.0), pos=(0, 0), vel=(0, 0))
+    actor = place(make_actor(fake_state, max_force_n=1000.0), pos=(0, 0), vel=(0, 0))
     actor.integrate(Vector(1e6, 1e6), dt=1 / 60)
     assert actor.steering_force.magnitude() == pytest.approx(1000.0)
     assert actor.acc.magnitude() == pytest.approx(200.0)  # 1000 N / 5 kg
 
 
 def test_speed_is_clamped_to_max_speed(fake_state, place):
-    actor = place(make_actor(fake_state, max_speed=120.0), pos=(0, 0), vel=(0, 0))
+    actor = place(make_actor(fake_state, max_speed_mps=120.0), pos=(0, 0), vel=(0, 0))
     integrate_for(actor, Vector(1000.0, 0.0), duration_s=10.0, dt=1 / 60)
     assert actor.vel.magnitude() == pytest.approx(120.0)
 
