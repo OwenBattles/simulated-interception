@@ -3,10 +3,18 @@ import json
 import pathlib
 import statistics
 
-from .constants import DEFAULT_HEADLESS_MAX_STEPS
-from .guidance import LAWS
-from .params import GuidanceParams, ScenarioParams
-from .simulation import EpisodeEnd, Simulation, SimulationConfig, run_headless
+from . import telemetry
+from ._core import (
+    DEFAULT_HEADLESS_MAX_STEPS,
+    GUIDANCE_LAWS,
+    GuidanceParams,
+    ScenarioParams,
+    Simulation,
+    SimulationConfig,
+    run_headless,
+)
+
+SUCCESS = "success"
 
 
 def build_parser():
@@ -35,7 +43,7 @@ def build_parser():
     parser.add_argument("--targets", type=int, default=1, help="number of targets")
     parser.add_argument(
         "--guidance",
-        choices=sorted(LAWS),
+        choices=sorted(GUIDANCE_LAWS),
         default="pn",
         help="interceptor guidance law (default: pn)",
     )
@@ -72,7 +80,7 @@ def scenario_from(args):
 
 
 def summarise(episodes):
-    successes = [e for e in episodes if e["end_reason"] == EpisodeEnd.SUCCESS.value]
+    successes = [e for e in episodes if e["end_reason"] == SUCCESS]
     misses = [
         e["min_miss_distance_m"] for e in episodes if e["min_miss_distance_m"] is not None
     ]
@@ -140,7 +148,7 @@ def run_single(args):
 
     if args.record is not None:
         args.record.parent.mkdir(parents=True, exist_ok=True)
-        sim.telemetry.write_json(sim, args.record)
+        telemetry.write_json(sim, args.record)
 
     if args.json:
         print(json.dumps(obs, indent=2))
@@ -154,7 +162,7 @@ def run_single(args):
         f"delta_v={obs['delta_v_mps']} m/s"
     )
     if args.record is not None:
-        print(f"telemetry -> {args.record} ({len(sim.telemetry.frames)} frames)")
+        print(f"telemetry -> {args.record} ({len(telemetry.frames(sim))} frames)")
 
 
 def main(argv=None):

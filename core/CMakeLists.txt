@@ -12,6 +12,7 @@ add_library(interception_core
     src/state.cpp
     src/simulation.cpp
     src/telemetry.cpp
+    src/analysis.cpp
 )
 add_library(interception::core ALIAS interception_core)
 

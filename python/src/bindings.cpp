@@ -14,6 +14,7 @@
 #include <optional>
 #include <vector>
 
+#include "interception/analysis.hpp"
 #include "interception/simulation.hpp"
 #include "interception/telemetry.hpp"
 
@@ -340,6 +341,36 @@ PYBIND11_MODULE(_core, m) {
         py::arg("seed") = py::none(),
         py::arg("max_steps") = constants::kDefaultHeadlessMaxSteps,
         py::arg("scenario") = py::none(), py::arg("record_telemetry") = false);
+
+    // --- analysis -------------------------------------------------------
+    py::class_<GuidanceTracePoint>(m, "GuidanceTracePoint")
+        .def_readonly("t", &GuidanceTracePoint::t)
+        .def_readonly("los_rate_rad_s", &GuidanceTracePoint::losRateRadS)
+        .def_readonly("range_m", &GuidanceTracePoint::rangeM);
+
+    py::class_<GuidanceTrace>(m, "GuidanceTrace")
+        .def_readonly("points", &GuidanceTrace::points)
+        .def_readonly("intercepted", &GuidanceTrace::intercepted)
+        .def_readonly("elapsed_s", &GuidanceTrace::elapsedS)
+        .def_readonly("delta_v_mps", &GuidanceTrace::deltaVMps);
+
+    m.def(
+        "trace_guidance",
+        [](const std::string& law, double nav_constant, double dt, int max_steps,
+           double plot_gate_m, double target_lateral_accel_mps2) {
+            GuidanceTraceRequest request;
+            request.guidance.law = guidanceLawFromString(law);
+            request.guidance.navConstant = nav_constant;
+            request.dt = dt;
+            request.maxSteps = max_steps;
+            request.plotGateM = plot_gate_m;
+            request.targetLateralAccelMps2 = target_lateral_accel_mps2;
+            return traceGuidance(request);
+        },
+        py::arg("law"), py::arg("nav_constant") = 4.0,
+        py::arg("dt") = constants::kSimDt, py::arg("max_steps") = 4000,
+        py::arg("plot_gate_m") = 50.0,
+        py::arg("target_lateral_accel_mps2") = 30.0);
 
     m.attr("SIM_DT") = constants::kSimDt;
     m.attr("DEFAULT_HEADLESS_MAX_STEPS") = constants::kDefaultHeadlessMaxSteps;

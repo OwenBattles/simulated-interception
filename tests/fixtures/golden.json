@@ -1,0 +1,1378 @@
+{
+ "_comment": "Recorded from the pure-Python reference engine at the commit where the differential suite showed it and the C++ engine agreeing exactly. The reference has since been removed; these fixtures are what keeps the C++ engine honest about reproducing its behaviour.",
+ "max_steps": 6000,
+ "episodes": [
+  {
+   "seed": 0,
+   "law": "pursuit",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 0,
+    "guidance": "pursuit",
+    "step": 235,
+    "elapsed_s": 3.9167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.603,
+    "delta_v_mps": 389.319,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 0,
+   "law": "pursuit",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 0,
+    "guidance": "pursuit",
+    "step": 1331,
+    "elapsed_s": 22.1833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.544,
+    "delta_v_mps": 4548.474,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 1,
+   "law": "pursuit",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 1,
+    "guidance": "pursuit",
+    "step": 344,
+    "elapsed_s": 5.7333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.6095,
+    "delta_v_mps": 892.887,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 1,
+   "law": "pursuit",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 1,
+    "guidance": "pursuit",
+    "step": 1463,
+    "elapsed_s": 24.3833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.4154,
+    "delta_v_mps": 5609.483,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 2,
+   "law": "pursuit",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 2,
+    "guidance": "pursuit",
+    "step": 715,
+    "elapsed_s": 11.9167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 1.3606,
+    "delta_v_mps": 1885.393,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 2,
+   "law": "pursuit",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 2,
+    "guidance": "pursuit",
+    "step": 1045,
+    "elapsed_s": 17.4167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.4022,
+    "delta_v_mps": 5213.1,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 3,
+   "law": "pursuit",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 3,
+    "guidance": "pursuit",
+    "step": 921,
+    "elapsed_s": 15.35,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.6767,
+    "delta_v_mps": 1812.723,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 3,
+   "law": "pursuit",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 3,
+    "guidance": "pursuit",
+    "step": 866,
+    "elapsed_s": 14.4333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.5216,
+    "delta_v_mps": 3613.28,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 7,
+   "law": "pursuit",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 7,
+    "guidance": "pursuit",
+    "step": 679,
+    "elapsed_s": 11.3167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.0291,
+    "delta_v_mps": 1683.516,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 7,
+   "law": "pursuit",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 7,
+    "guidance": "pursuit",
+    "step": 1454,
+    "elapsed_s": 24.2333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 1.8326,
+    "delta_v_mps": 5971.873,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 11,
+   "law": "pursuit",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 11,
+    "guidance": "pursuit",
+    "step": 606,
+    "elapsed_s": 10.1,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 0.9553,
+    "delta_v_mps": 458.717,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 11,
+   "law": "pursuit",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 11,
+    "guidance": "pursuit",
+    "step": 938,
+    "elapsed_s": 15.6333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.2361,
+    "delta_v_mps": 3316.701,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 0,
+   "law": "lead",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 0,
+    "guidance": "lead",
+    "step": 203,
+    "elapsed_s": 3.3833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.2491,
+    "delta_v_mps": 282.641,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 0,
+   "law": "lead",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 0,
+    "guidance": "lead",
+    "step": 982,
+    "elapsed_s": 16.3667,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.1605,
+    "delta_v_mps": 3903.693,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 1,
+   "law": "lead",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 1,
+    "guidance": "lead",
+    "step": 252,
+    "elapsed_s": 4.2,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.6738,
+    "delta_v_mps": 691.408,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 1,
+   "law": "lead",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 1,
+    "guidance": "lead",
+    "step": 1139,
+    "elapsed_s": 18.9833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 1.4913,
+    "delta_v_mps": 5419.914,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 2,
+   "law": "lead",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 2,
+    "guidance": "lead",
+    "step": 713,
+    "elapsed_s": 11.8833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.9302,
+    "delta_v_mps": 1822.373,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 2,
+   "law": "lead",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 2,
+    "guidance": "lead",
+    "step": 963,
+    "elapsed_s": 16.05,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 1.36,
+    "delta_v_mps": 4193.679,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 3,
+   "law": "lead",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 3,
+    "guidance": "lead",
+    "step": 672,
+    "elapsed_s": 11.2,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.1264,
+    "delta_v_mps": 1309.282,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 3,
+   "law": "lead",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 3,
+    "guidance": "lead",
+    "step": 683,
+    "elapsed_s": 11.3833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 1.5925,
+    "delta_v_mps": 2365.249,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 7,
+   "law": "lead",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 7,
+    "guidance": "lead",
+    "step": 533,
+    "elapsed_s": 8.8833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 1.8636,
+    "delta_v_mps": 1116.545,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 7,
+   "law": "lead",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 7,
+    "guidance": "lead",
+    "step": 960,
+    "elapsed_s": 16.0,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.7473,
+    "delta_v_mps": 4205.052,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 11,
+   "law": "lead",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 11,
+    "guidance": "lead",
+    "step": 722,
+    "elapsed_s": 12.0333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 0.3754,
+    "delta_v_mps": 1272.737,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 11,
+   "law": "lead",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 11,
+    "guidance": "lead",
+    "step": 770,
+    "elapsed_s": 12.8333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.4026,
+    "delta_v_mps": 2743.304,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 0,
+   "law": "pn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 0,
+    "guidance": "pn",
+    "step": 198,
+    "elapsed_s": 3.3,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.189,
+    "delta_v_mps": 344.378,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 0,
+   "law": "pn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 0,
+    "guidance": "pn",
+    "step": 1119,
+    "elapsed_s": 18.65,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.2129,
+    "delta_v_mps": 2604.955,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 1,
+   "law": "pn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 1,
+    "guidance": "pn",
+    "step": 123,
+    "elapsed_s": 2.05,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.0974,
+    "delta_v_mps": 239.234,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 1,
+   "law": "pn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 1,
+    "guidance": "pn",
+    "step": 1095,
+    "elapsed_s": 18.25,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.0244,
+    "delta_v_mps": 3523.431,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 2,
+   "law": "pn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 2,
+    "guidance": "pn",
+    "step": 688,
+    "elapsed_s": 11.4667,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 0.6991,
+    "delta_v_mps": 1615.539,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 2,
+   "law": "pn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 2,
+    "guidance": "pn",
+    "step": 662,
+    "elapsed_s": 11.0333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.6213,
+    "delta_v_mps": 2335.807,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 3,
+   "law": "pn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 3,
+    "guidance": "pn",
+    "step": 842,
+    "elapsed_s": 14.0333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 0.3652,
+    "delta_v_mps": 1260.275,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 3,
+   "law": "pn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 3,
+    "guidance": "pn",
+    "step": 608,
+    "elapsed_s": 10.1333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.7235,
+    "delta_v_mps": 2044.339,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 7,
+   "law": "pn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 7,
+    "guidance": "pn",
+    "step": 848,
+    "elapsed_s": 14.1333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.5007,
+    "delta_v_mps": 1681.451,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 7,
+   "law": "pn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 7,
+    "guidance": "pn",
+    "step": 773,
+    "elapsed_s": 12.8833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.8548,
+    "delta_v_mps": 2209.477,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 11,
+   "law": "pn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 11,
+    "guidance": "pn",
+    "step": 694,
+    "elapsed_s": 11.5667,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.6835,
+    "delta_v_mps": 490.278,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 11,
+   "law": "pn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 11,
+    "guidance": "pn",
+    "step": 994,
+    "elapsed_s": 16.5667,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.4086,
+    "delta_v_mps": 2547.736,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 0,
+   "law": "apn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 0,
+    "guidance": "apn",
+    "step": 203,
+    "elapsed_s": 3.3833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 1.2006,
+    "delta_v_mps": 412.802,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 0,
+   "law": "apn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 0,
+    "guidance": "apn",
+    "step": 1021,
+    "elapsed_s": 17.0167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 1.0071,
+    "delta_v_mps": 4375.054,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 1,
+   "law": "apn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 1,
+    "guidance": "apn",
+    "step": 127,
+    "elapsed_s": 2.1167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 1.4649,
+    "delta_v_mps": 346.958,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 1,
+   "law": "apn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 1,
+    "guidance": "apn",
+    "step": 1363,
+    "elapsed_s": 22.7167,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.3521,
+    "delta_v_mps": 5805.615,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 8
+   }
+  },
+  {
+   "seed": 2,
+   "law": "apn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 2,
+    "guidance": "apn",
+    "step": 1161,
+    "elapsed_s": 19.35,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.9981,
+    "delta_v_mps": 3224.134,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 2,
+   "law": "apn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 2,
+    "guidance": "apn",
+    "step": 1100,
+    "elapsed_s": 18.3333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 2.0809,
+    "delta_v_mps": 5500.717,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 9
+   }
+  },
+  {
+   "seed": 3,
+   "law": "apn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 3,
+    "guidance": "apn",
+    "step": 747,
+    "elapsed_s": 12.45,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 1.4162,
+    "delta_v_mps": 1820.545,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 3,
+   "law": "apn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 3,
+    "guidance": "apn",
+    "step": 1023,
+    "elapsed_s": 17.05,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 1.844,
+    "delta_v_mps": 4733.11,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 5
+   }
+  },
+  {
+   "seed": 7,
+   "law": "apn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 7,
+    "guidance": "apn",
+    "step": 1064,
+    "elapsed_s": 17.7333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 2.3973,
+    "delta_v_mps": 2570.775,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 7,
+   "law": "apn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 7,
+    "guidance": "apn",
+    "step": 1112,
+    "elapsed_s": 18.5333,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.0007,
+    "delta_v_mps": 5122.656,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 10
+   }
+  },
+  {
+   "seed": 11,
+   "law": "apn",
+   "agents": 1,
+   "targets": 1,
+   "observation": {
+    "seed": 11,
+    "guidance": "apn",
+    "step": 887,
+    "elapsed_s": 14.7833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 1,
+    "min_miss_distance_m": 1.1251,
+    "delta_v_mps": 1738.496,
+    "num_targets": 0,
+    "num_agents": 1,
+    "num_obstacles": 6
+   }
+  },
+  {
+   "seed": 11,
+   "law": "apn",
+   "agents": 2,
+   "targets": 3,
+   "observation": {
+    "seed": 11,
+    "guidance": "apn",
+    "step": 935,
+    "elapsed_s": 15.5833,
+    "done": true,
+    "end_reason": "success",
+    "intercepts": 3,
+    "min_miss_distance_m": 0.0384,
+    "delta_v_mps": 4228.588,
+    "num_targets": 0,
+    "num_agents": 2,
+    "num_obstacles": 6
+   }
+  }
+ ],
+ "trajectory": {
+  "seed": 2,
+  "max_steps": 1200,
+  "sample_every": 25,
+  "samples": [
+   {
+    "step": 25,
+    "agents": [
+     [
+      63.601103379,
+      580.679301276
+     ]
+    ],
+    "targets": [
+     [
+      570.634539817,
+      414.208168098
+     ]
+    ]
+   },
+   {
+    "step": 50,
+    "agents": [
+     [
+      50.568132263,
+      582.138874263
+     ]
+    ],
+    "targets": [
+     [
+      600.464191507,
+      424.617652475
+     ]
+    ]
+   },
+   {
+    "step": 75,
+    "agents": [
+     [
+      43.83580423,
+      590.28982279
+     ]
+    ],
+    "targets": [
+     [
+      629.930239591,
+      417.946859406
+     ]
+    ]
+   },
+   {
+    "step": 100,
+    "agents": [
+     [
+      39.653178164,
+      595.424318136
+     ]
+    ],
+    "targets": [
+     [
+      650.804842384,
+      396.777683145
+     ]
+    ]
+   },
+   {
+    "step": 125,
+    "agents": [
+     [
+      37.060709395,
+      598.189667458
+     ]
+    ],
+    "targets": [
+     [
+      656.683347674,
+      367.999151489
+     ]
+    ]
+   },
+   {
+    "step": 150,
+    "agents": [
+     [
+      34.72669545,
+      600.238097634
+     ]
+    ],
+    "targets": [
+     [
+      645.682241558,
+      341.30784135
+     ]
+    ]
+   },
+   {
+    "step": 175,
+    "agents": [
+     [
+      23.646396523,
+      608.718538729
+     ]
+    ],
+    "targets": [
+     [
+      621.044639974,
+      320.679398613
+     ]
+    ]
+   },
+   {
+    "step": 200,
+    "agents": [
+     [
+      15.231960043,
+      620.963777353
+     ]
+    ],
+    "targets": [
+     [
+      595.304860039,
+      299.867704297
+     ]
+    ]
+   },
+   {
+    "step": 225,
+    "agents": [
+     [
+      4.199678761,
+      647.267062091
+     ]
+    ],
+    "targets": [
+     [
+      564.036527446,
+      293.115443877
+     ]
+    ]
+   },
+   {
+    "step": 250,
+    "agents": [
+     [
+      5.15835771,
+      688.379325302
+     ]
+    ],
+    "targets": [
+     [
+      533.428128425,
+      303.340026375
+     ]
+    ]
+   },
+   {
+    "step": 275,
+    "agents": [
+     [
+      3.839978393,
+      736.317982113
+     ]
+    ],
+    "targets": [
+     [
+      512.697169631,
+      327.183243074
+     ]
+    ]
+   },
+   {
+    "step": 300,
+    "agents": [
+     [
+      3.290332601,
+      773.451453565
+     ]
+    ],
+    "targets": [
+     [
+      507.534543333,
+      357.885832834
+     ]
+    ]
+   },
+   {
+    "step": 325,
+    "agents": [
+     [
+      2.726258837,
+      792.024825163
+     ]
+    ],
+    "targets": [
+     [
+      518.815978777,
+      385.911386112
+     ]
+    ]
+   },
+   {
+    "step": 350,
+    "agents": [
+     [
+      2.974389976,
+      794.016742495
+     ]
+    ],
+    "targets": [
+     [
+      543.686337646,
+      403.556412621
+     ]
+    ]
+   },
+   {
+    "step": 375,
+    "agents": [
+     [
+      8.971919258,
+      781.921439286
+     ]
+    ],
+    "targets": [
+     [
+      574.468431474,
+      405.43308108
+     ]
+    ]
+   },
+   {
+    "step": 400,
+    "agents": [
+     [
+      34.407982803,
+      756.701158641
+     ]
+    ],
+    "targets": [
+     [
+      603.199477492,
+      390.669931201
+     ]
+    ]
+   },
+   {
+    "step": 425,
+    "agents": [
+     [
+      71.37880633,
+      723.073586773
+     ]
+    ],
+    "targets": [
+     [
+      619.822204362,
+      364.215285444
+     ]
+    ]
+   },
+   {
+    "step": 450,
+    "agents": [
+     [
+      111.788042999,
+      693.769704481
+     ]
+    ],
+    "targets": [
+     [
+      620.090405996,
+      332.672199611
+     ]
+    ]
+   },
+   {
+    "step": 475,
+    "agents": [
+     [
+      150.437218787,
+      662.127975479
+     ]
+    ],
+    "targets": [
+     [
+      609.790273134,
+      301.048060592
+     ]
+    ]
+   },
+   {
+    "step": 500,
+    "agents": [
+     [
+      184.038821259,
+      625.166043814
+     ]
+    ],
+    "targets": [
+     [
+      594.261475612,
+      272.168914988
+     ]
+    ]
+   },
+   {
+    "step": 525,
+    "agents": [
+     [
+      211.257598071,
+      583.288022904
+     ]
+    ],
+    "targets": [
+     [
+      566.377788079,
+      254.813393278
+     ]
+    ]
+   },
+   {
+    "step": 550,
+    "agents": [
+     [
+      233.280822324,
+      538.411041683
+     ]
+    ],
+    "targets": [
+     [
+      534.17183217,
+      253.676168368
+     ]
+    ]
+   },
+   {
+    "step": 575,
+    "agents": [
+     [
+      256.784570512,
+      494.431976753
+     ]
+    ],
+    "targets": [
+     [
+      507.655065998,
+      268.545294859
+     ]
+    ]
+   },
+   {
+    "step": 600,
+    "agents": [
+     [
+      290.508602687,
+      457.99505298
+     ]
+    ],
+    "targets": [
+     [
+      492.698817918,
+      295.932548236
+     ]
+    ]
+   },
+   {
+    "step": 625,
+    "agents": [
+     [
+      335.385567937,
+      436.450301427
+     ]
+    ],
+    "targets": [
+     [
+      486.377846787,
+      328.510325866
+     ]
+    ]
+   },
+   {
+    "step": 650,
+    "agents": [
+     [
+      384.372084866,
+      426.91492563
+     ]
+    ],
+    "targets": [
+     [
+      483.496483734,
+      361.542826804
+     ]
+    ]
+   },
+   {
+    "step": 675,
+    "agents": [
+     [
+      432.782997845,
+      416.234355856
+     ]
+    ],
+    "targets": [
+     [
+      467.905586949,
+      390.299977434
+     ]
+    ]
+   }
+  ]
+ }
+}

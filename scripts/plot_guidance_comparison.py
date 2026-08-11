@@ -22,15 +22,11 @@ Stdlib only -- see scripts/plot_engagement.py for why.
 import argparse
 import math
 import pathlib
-import random
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
 
-from interception.agent import Agent  # noqa: E402
-from interception.guidance import engagement_geometry  # noqa: E402
-from interception.params import GuidanceParams, default_interceptor  # noqa: E402
-from interception.vector import Vector  # noqa: E402
+from interception import trace_guidance  # noqa: E402
 
 MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
 
@@ -61,70 +57,27 @@ LABEL_GUTTER_X = PAD_L + PLOT_W + 18
 LABEL_MIN_GAP = 44
 
 
-class TurningTarget:
-    """Constant-speed target in a steady turn (constant lateral g)."""
-
-    def __init__(self, pos, vel, lateral_accel_mps2):
-        self.pos = pos
-        self.vel = vel
-        self.lateral = lateral_accel_mps2
-        self.acc = Vector()
-        self.hit_radius_m = 1.0
-
-    def step(self, dt):
-        normal = self.vel.normalize().perpendicular()
-        self.acc = normal * self.lateral
-        self.vel = self.vel + self.acc * dt
-        self.pos = self.pos + self.vel * dt
-
-
-class FakeWorld:
-    def __init__(self):
-        self.rng = random.Random(0)
-        self.width = self.height = 1e7
-        self.obstacles = []
-        self.targets = []
-
-
 def fly(law, nav_constant, dt, max_steps, plot_gate_m):
     """
-    Fly one engagement and return its LOS-rate trace.
+    Run one engagement through the engine's own comparison harness.
 
-    ``lambda_dot`` carries ``1/R^2``, so it diverges in the last fraction of
-    a second regardless of how well the law is doing -- lead pursuit exits
-    this engagement at 38 rad/s. That terminal spike is a real singularity,
-    not a defect, but plotting it compresses every meaningful curve into the
-    baseline. The trace is therefore cut at ``plot_gate_m`` while the flight
-    itself continues to intercept, so the reported times and delta-v are the
-    true end-to-end figures.
+    The physics lives in core/ (see interception/analysis.hpp), not here: a
+    figure whose numbers come from a second implementation is worth nothing.
+    `lambda_dot` carries 1/R^2 and diverges in the last fraction of a second
+    regardless of how well the law is doing, so the trace is cut at
+    `plot_gate_m` while the flight continues to intercept -- the reported
+    time and delta-v stay end-to-end.
     """
-    world = FakeWorld()
-    agent = Agent(
-        world, default_interceptor(), GuidanceParams(law=law, nav_constant=nav_constant)
+    trace = trace_guidance(
+        law=law,
+        nav_constant=nav_constant,
+        dt=dt,
+        max_steps=max_steps,
+        plot_gate_m=plot_gate_m,
     )
-    agent.pos = Vector(5_000, 5_000)
-    agent.vel = Vector(120, 0)
-    agent.reorient()
-
-    target = TurningTarget(Vector(6_200, 5_000), Vector(0, 80), lateral_accel_mps2=30.0)
-    world.targets = [target]
-
-    times, rates = [], []
-    intercepted = False
-    elapsed = 0.0
-    for step in range(max_steps):
-        _, range_m, _, rate = engagement_geometry(agent, target)
-        elapsed = step * dt
-        if range_m >= plot_gate_m:
-            times.append(elapsed)
-            rates.append(abs(rate))
-        if range_m < agent.hit_radius_m + target.hit_radius_m:
-            intercepted = True
-            break
-        agent.step(dt)
-        target.step(dt)
-
-    return times, rates, intercepted, agent.delta_v_mps, elapsed
+    times = [point.t for point in trace.points]
+    rates = [point.los_rate_rad_s for point in trace.points]
+    return times, rates, trace.intercepted, trace.delta_v_mps, trace.elapsed_s
 
 
 def nice_ceiling(value):

@@ -7,7 +7,7 @@ from .constants import (
     WINDOW_WIDTH_PX,
 )
 from .render import draw_world
-from .simulation import Simulation, SimulationConfig
+from ._core import Simulation, SimulationConfig
 
 HELP = "space pause | r reset | n step | p probes | esc quit"
 
@@ -61,7 +61,7 @@ class View:
             f"targets {obs['num_targets']}  intercepts {obs['intercepts']}"
             f"  min miss {'--' if miss is None else f'{miss:.2f} m'}",
             f"delta-v {obs['delta_v_mps']:.1f} m/s"
-            + (f"  [{self.sim.end_reason.value}]" if self.sim.done else "")
+            + (f"  [{self.sim.end_reason}]" if self.sim.done else "")
             + ("  [paused]" if self.paused else ""),
             HELP,
         ]
