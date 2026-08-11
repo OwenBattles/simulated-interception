@@ -10,3 +10,8 @@ dist/
 results/**/*.png
 results/**/*.csv
 !results/**/.gitkeep
+
+# C++ / CMake
+build/
+cmake-build-*/
+compile_commands.json

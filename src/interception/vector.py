@@ -47,7 +47,15 @@ class Vector:
         return (self.x, self.y)
 
     def magnitude(self):
-        return math.hypot(self.x, self.y)
+        # Deliberately not math.hypot. CPython implements hypot itself with
+        # Neumaier summation for extra accuracy rather than calling libm, so
+        # it disagrees with C++'s std::hypot by up to ~5e-13. That is far
+        # below any physical tolerance, but it compounds: over a few
+        # thousand steps it eventually flips a discrete decision -- which
+        # target is nearest, or whether a swept test registers a hit -- and
+        # the two engines diverge. sqrt is IEEE-754 correctly rounded, so
+        # both languages agree exactly.
+        return math.sqrt(self.x * self.x + self.y * self.y)
 
     def magnitude_squared(self):
         return self.x * self.x + self.y * self.y
