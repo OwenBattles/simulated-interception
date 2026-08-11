@@ -46,9 +46,24 @@ flight-representative.
 - **Collision**: swept-sphere closest-approach over each step, not endpoint
   sampling. At a 200 m/s closing rate the pair advances 3.3 m per tick against
   a 3 m capture radius, so endpoint tests tunnel.
-- **Randomness**: one seeded `random.Random` per world. Runs without an
-  explicit seed draw one from `SystemRandom`, record it, and report it, so
-  every episode is replayable after the fact.
+- **Randomness**: one seeded PCG32 per world, implemented in the engine
+  rather than delegated to a standard library — `std::uniform_real_distribution`
+  is explicitly implementation-defined and returns different values on
+  libstdc++ and libc++ from the same seed. Runs without an explicit seed draw
+  one from the OS, record it, and report it, so every episode is replayable
+  after the fact.
+- **Determinism, precisely**: within one platform and toolchain the engine is
+  bit-reproducible — same seed, same bits. *Across* platforms it is not, and
+  cannot be without shipping our own transcendental functions. `sqrt` is
+  correctly rounded by IEEE-754, but `log`, `sin`, `cos` and `atan2` are not,
+  and glibc and Apple's libm disagree in the last ulp. The engine calls all
+  four: `log` in the Gaussian draw, `sin`/`cos` in every polar construction,
+  `atan2` in the evader's wander. The resulting differences are around 1e-16
+  and stay far below anything physical, but they are real — a long `apn`
+  episode can land a hair either side of a rounding boundary in its reported
+  miss distance. Everything discrete (step counts, intercepts, outcomes)
+  still matches exactly. `-ffast-math` is never enabled, since it would
+  permit reassociation and make results depend on optimisation level too.
 - **Wander process**: the evader's wander angle is a Wiener process with
   increments scaled by `sqrt(dt)`, so its path statistics do not change with
   the timestep.
