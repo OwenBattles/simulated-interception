@@ -38,6 +38,7 @@
     { id: "agentSpeed", path: ["interceptor", "maxSpeedMps"], fmt: (v) => `${v} m/s` },
     { id: "agentHit", path: ["interceptor", "hitRadiusM"], fmt: (v) => `${v} m` },
     { id: "targetSpeed", path: ["target", "maxSpeedMps"], fmt: (v) => `${v} m/s` },
+    { id: "evasiveness", path: ["evasiveness"], fmt: (v) => v.toFixed(2) },
     { id: "numAgents", path: ["numAgents"], fmt: (v) => String(v) },
     { id: "numTargets", path: ["numTargets"], fmt: (v) => String(v) },
   ];
@@ -77,6 +78,7 @@
       interceptor: { ...params.interceptor },
       target: { ...params.target },
       guidance: { ...params.guidance },
+      evasiveness: params.evasiveness,
     };
 
     BINDINGS.forEach(({ id, path }) => setNested(next, path, Number($(id).value)));
@@ -114,6 +116,16 @@
     });
 
     $("obstaclesOut").textContent = $("obstacles").value;
+
+    // Say what the number means, since the endpoints are qualitatively
+    // different behaviours rather than more or less of one thing.
+    const evasiveness = Number($("evasiveness").value);
+    $("evasivenessHint").textContent =
+      evasiveness === 0
+        ? "ignores the interceptor entirely (random wander)"
+        : evasiveness >= 1
+          ? "beams the interceptor: crosses its line of sight to spoil the intercept"
+          : "part wander, part beam";
     $("speedOut").textContent = `${stepsPerFrame}×`;
     $("navConstantField").hidden = !["pn", "apn"].includes($("law").value);
   }

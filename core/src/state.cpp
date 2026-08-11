@@ -37,7 +37,7 @@ void State::buildWorld() {
 
     targets_.reserve(static_cast<std::size_t>(scenario_.numTargets));
     for (int i = 0; i < scenario_.numTargets; ++i) {
-        targets_.emplace_back(*this, scenario_.target, rng_);
+        targets_.emplace_back(*this, scenario_.target, scenario_.evasiveness, rng_);
     }
 
     agents_.reserve(static_cast<std::size_t>(scenario_.numAgents));

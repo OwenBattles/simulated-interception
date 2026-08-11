@@ -109,6 +109,7 @@ public:
             static_cast<int>(number(options, "minObstacles", scenario_.minObstacles));
         scenario_.maxObstacles =
             static_cast<int>(number(options, "maxObstacles", scenario_.maxObstacles));
+        scenario_.evasiveness = number(options, "evasiveness", scenario_.evasiveness);
 
         scenario_.interceptor = readVehicle(options["interceptor"], scenario_.interceptor);
         scenario_.target = readVehicle(options["target"], scenario_.target);
@@ -216,6 +217,7 @@ public:
         out.set("numTargets", scenario_.numTargets);
         out.set("minObstacles", scenario_.minObstacles);
         out.set("maxObstacles", scenario_.maxObstacles);
+        out.set("evasiveness", scenario_.evasiveness);
         out.set("interceptor", vehicleToVal(scenario_.interceptor));
         out.set("target", vehicleToVal(scenario_.target));
         out.set("guidance", guidance);

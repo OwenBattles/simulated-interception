@@ -181,6 +181,13 @@ select {
   accent-color: var(--accent);
 }
 
+.hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
 .derived {
   margin: -4px 0 0;
   font-size: 11.5px;
