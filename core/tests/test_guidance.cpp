@@ -7,6 +7,7 @@
 #include <doctest/doctest.h>
 
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 #include "helpers.hpp"
