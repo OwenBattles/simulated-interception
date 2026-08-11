@@ -14,9 +14,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(INTERCEPTION_BUILD_TESTS "Build the C++ unit tests" ON)
+option(INTERCEPTION_BUILD_PYTHON "Build the pybind11 extension" OFF)
 
 add_subdirectory(core)
 add_subdirectory(web)
+add_subdirectory(python)
 
 if(INTERCEPTION_BUILD_TESTS AND NOT EMSCRIPTEN)
     enable_testing()

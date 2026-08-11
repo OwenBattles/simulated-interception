@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core>=0.9", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "interception"
-version = "0.2.0"
+version = "0.4.0"
 description = "2D counter-UAS interception simulator: guidance, avoidance, and engagement metrics"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,16 +13,23 @@ authors = [{ name = "Owen Battles" }]
 dependencies = []
 
 [project.optional-dependencies]
-# The simulation core has no third-party dependencies; pygame is only
-# needed to open a window, so CI installs the base package alone.
+# The engine is C++ with no third-party runtime dependencies; pygame is
+# only needed to open a window, so CI installs the base package alone.
 viz = ["pygame>=2.5"]
 dev = ["pytest>=7.4"]
 
 [project.scripts]
 interception = "interception.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.scikit-build]
+minimum-version = "0.9"
+# Kept out of ./build so a native CMake tree and a wheel build can coexist.
+build-dir = "build-py/{wheel_tag}"
+wheel.packages = ["src/interception"]
+
+[tool.scikit-build.cmake.define]
+INTERCEPTION_BUILD_PYTHON = "ON"
+INTERCEPTION_BUILD_TESTS = "OFF"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
