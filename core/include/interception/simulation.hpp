@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iosfwd>
 #include <memory>
 #include <string>
 
@@ -13,7 +14,11 @@ namespace interception {
 class TelemetryRecorder;
 
 enum class EpisodeEnd { None, Success, Timeout };
-std::string toString(EpisodeEnd end);
+std::string episodeEndName(EpisodeEnd end);
+
+/// Scoped enums have no default stream insertion, which leaves logs and
+/// test failure messages showing an opaque integer.
+std::ostream& operator<<(std::ostream& os, EpisodeEnd end);
 
 /// Everything needed to reproduce an episode exactly.
 struct SimulationConfig {

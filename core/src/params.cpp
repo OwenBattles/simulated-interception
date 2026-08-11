@@ -4,7 +4,7 @@
 
 namespace interception {
 
-std::string toString(GuidanceLawKind kind) {
+std::string guidanceLawName(GuidanceLawKind kind) {
     switch (kind) {
         case GuidanceLawKind::Pursuit:
             return "pursuit";

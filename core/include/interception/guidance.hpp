@@ -72,7 +72,7 @@ public:
     virtual ~GuidanceLaw() = default;
 
     virtual GuidanceLawKind kind() const = 0;
-    std::string name() const { return toString(kind()); }
+    std::string name() const { return guidanceLawName(kind()); }
 
     virtual Vec2 command(const Actor& agent, const Actor& target, double dt) const = 0;
     virtual GuidanceDiagnostics diagnostics(const Actor& agent,

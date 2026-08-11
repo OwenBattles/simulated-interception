@@ -1,5 +1,6 @@
 #include "interception/simulation.hpp"
 
+#include <ostream>
 #include <random>
 #include <stdexcept>
 #include <utility>
@@ -19,7 +20,7 @@ std::uint64_t drawSeed() {
 
 }  // namespace
 
-std::string toString(EpisodeEnd end) {
+std::string episodeEndName(EpisodeEnd end) {
     switch (end) {
         case EpisodeEnd::None:
             return "none";
@@ -29,6 +30,10 @@ std::string toString(EpisodeEnd end) {
             return "timeout";
     }
     throw std::invalid_argument("unhandled episode end");
+}
+
+std::ostream& operator<<(std::ostream& os, EpisodeEnd end) {
+    return os << episodeEndName(end);
 }
 
 Simulation::Simulation(SimulationConfig config)
@@ -85,11 +90,11 @@ Simulation& Simulation::run() {
 Observation Simulation::observation() const {
     Observation obs;
     obs.seed = seed_;
-    obs.guidance = toString(config_.scenario.guidance.law);
+    obs.guidance = guidanceLawName(config_.scenario.guidance.law);
     obs.step = steps_;
     obs.elapsedS = elapsedS();
     obs.done = done_;
-    obs.endReason = toString(endReason_);
+    obs.endReason = episodeEndName(endReason_);
     obs.intercepts = state_->intercepts();
     obs.hasMinMissDistance = state_->hasMinMissDistance();
     obs.minMissDistanceM = obs.hasMinMissDistance ? state_->minMissDistanceM() : 0.0;

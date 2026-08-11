@@ -13,7 +13,7 @@ namespace interception {
 /// string forms exist only at the boundaries -- CLI, bindings, web API.
 enum class GuidanceLawKind { Pursuit, Lead, ProportionalNavigation, AugmentedPn };
 
-std::string toString(GuidanceLawKind kind);
+std::string guidanceLawName(GuidanceLawKind kind);
 
 /// Throws std::invalid_argument on an unrecognised name.
 GuidanceLawKind guidanceLawFromString(const std::string& name);
