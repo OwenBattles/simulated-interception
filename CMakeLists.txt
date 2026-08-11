@@ -16,6 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option(INTERCEPTION_BUILD_TESTS "Build the C++ unit tests" ON)
 
 add_subdirectory(core)
+add_subdirectory(web)
 
 if(INTERCEPTION_BUILD_TESTS AND NOT EMSCRIPTEN)
     enable_testing()

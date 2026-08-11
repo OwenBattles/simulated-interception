@@ -15,3 +15,8 @@ results/**/*.csv
 build/
 cmake-build-*/
 compile_commands.json
+
+# WASM build artifacts (built by CI for the Pages deploy)
+web/public/interception.js
+web/public/interception.wasm
+build-wasm/
