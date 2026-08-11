@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interception simulator</title>
+    <meta
+      name="description"
+      content="A 2D counter-UAS interception simulator running a C++ engine compiled to WebAssembly."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%8E%AF</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="panel">
+        <header class="panel__header">
+          <h1>Interception simulator</h1>
+          <p class="subtitle">
+            C++ engine compiled to WebAssembly. Runs entirely in this tab &mdash;
+            no server, no backend.
+          </p>
+        </header>
+
+        <section class="controls" id="transport">
+          <div class="buttons">
+            <button id="playPause" class="button button--primary">Pause</button>
+            <button id="stepOnce" class="button">Step</button>
+            <button id="restart" class="button">Restart</button>
+            <button id="newSeed" class="button">New seed</button>
+          </div>
+          <label class="field">
+            <span class="field__label">
+              Sim speed <output id="speedOut">1&times;</output>
+            </span>
+            <input id="speed" type="range" min="1" max="8" step="1" value="1" />
+          </label>
+        </section>
+
+        <section class="controls">
+          <h2>Guidance</h2>
+          <label class="field">
+            <span class="field__label">Law</span>
+            <select id="law">
+              <option value="pursuit">Pure pursuit</option>
+              <option value="lead">Lead pursuit</option>
+              <option value="pn">Proportional navigation</option>
+              <option value="apn">Augmented PN</option>
+            </select>
+          </label>
+          <label class="field" id="navConstantField">
+            <span class="field__label">
+              Navigation constant N <output id="navConstantOut"></output>
+            </span>
+            <input id="navConstant" type="range" min="2" max="6" step="0.1" />
+          </label>
+        </section>
+
+        <section class="controls">
+          <h2>Interceptor</h2>
+          <label class="field">
+            <span class="field__label">
+              Max speed <output id="agentSpeedOut"></output>
+            </span>
+            <input id="agentSpeed" type="range" min="40" max="250" step="5" />
+          </label>
+          <label class="field">
+            <span class="field__label">
+              Max lateral accel <output id="agentAccelOut"></output>
+            </span>
+            <input id="agentAccel" type="range" min="50" max="500" step="10" />
+          </label>
+          <label class="field">
+            <span class="field__label">
+              Capture radius <output id="agentHitOut"></output>
+            </span>
+            <input id="agentHit" type="range" min="1" max="20" step="0.5" />
+          </label>
+          <p class="derived" id="agentDerived"></p>
+        </section>
+
+        <section class="controls">
+          <h2>Target</h2>
+          <label class="field">
+            <span class="field__label">
+              Max speed <output id="targetSpeedOut"></output>
+            </span>
+            <input id="targetSpeed" type="range" min="20" max="250" step="5" />
+          </label>
+          <label class="field">
+            <span class="field__label">
+              Max lateral accel <output id="targetAccelOut"></output>
+            </span>
+            <input id="targetAccel" type="range" min="20" max="500" step="10" />
+          </label>
+          <p class="derived" id="targetDerived"></p>
+        </section>
+
+        <section class="controls">
+          <h2>Engagement</h2>
+          <label class="field">
+            <span class="field__label">
+              Interceptors <output id="numAgentsOut"></output>
+            </span>
+            <input id="numAgents" type="range" min="1" max="8" step="1" />
+          </label>
+          <label class="field">
+            <span class="field__label">
+              Targets <output id="numTargetsOut"></output>
+            </span>
+            <input id="numTargets" type="range" min="1" max="8" step="1" />
+          </label>
+          <label class="field">
+            <span class="field__label">
+              Keep-out volumes <output id="obstaclesOut"></output>
+            </span>
+            <input id="obstacles" type="range" min="0" max="24" step="1" />
+          </label>
+          <label class="checkbox">
+            <input id="showProbes" type="checkbox" checked />
+            <span>Show avoidance probes</span>
+          </label>
+          <label class="checkbox">
+            <input id="showTrails" type="checkbox" checked />
+            <span>Show trails</span>
+          </label>
+        </section>
+
+        <p class="note">
+          Parameters take effect on release and restart the engagement, because
+          they change how the world is generated. Every run reports its seed and
+          can be replayed exactly.
+        </p>
+      </aside>
+
+      <main class="stage">
+        <div class="canvas-wrap">
+          <canvas id="view"></canvas>
+          <div class="loading" id="loading">Loading engine&hellip;</div>
+        </div>
+
+        <div class="readout" id="readout">
+          <div class="stat">
+            <span class="stat__label">Seed</span>
+            <span class="stat__value" id="statSeed">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Time</span>
+            <span class="stat__value" id="statTime">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Targets left</span>
+            <span class="stat__value" id="statTargets">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Intercepts</span>
+            <span class="stat__value" id="statIntercepts">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Min miss</span>
+            <span class="stat__value" id="statMiss">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Fleet &Delta;v</span>
+            <span class="stat__value" id="statDeltaV">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Range</span>
+            <span class="stat__value" id="statRange">&mdash;</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Closing</span>
+            <span class="stat__value" id="statClosing">&mdash;</span>
+          </div>
+          <div class="stat" title="A collision course is exactly LOS rate = 0">
+            <span class="stat__label">LOS rate</span>
+            <span class="stat__value" id="statLos">&mdash;</span>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="interception.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

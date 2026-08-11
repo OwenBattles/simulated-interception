@@ -1,0 +1,49 @@
+name: Deploy web app
+
+# Builds the WebAssembly bundle and publishes web/public to GitHub Pages,
+# so the simulator is reachable as a permanent link. Nothing is served at
+# runtime -- the engine runs in the visitor's browser.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a run finish rather than cancelling it, so a deploy is never left
+# half-applied; queue at most one behind it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.61
+          actions-cache-folder: emsdk-cache
+      - name: Build WebAssembly bundle
+        run: |
+          emcmake cmake -S . -B build-wasm -DINTERCEPTION_BUILD_TESTS=OFF
+          cmake --build build-wasm -j"$(nproc)"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

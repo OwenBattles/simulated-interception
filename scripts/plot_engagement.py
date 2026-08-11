@@ -15,7 +15,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
 
-from interception.simulation import Simulation, SimulationConfig  # noqa: E402
+from interception import Simulation, SimulationConfig  # noqa: E402
 
 MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
 
@@ -38,17 +38,22 @@ FOOTER_H = 40
 
 
 def record(seed, max_steps):
-    """Run one episode, sampling every actor's position each step."""
+    """
+    Run one episode, sampling every actor's position each step.
+
+    Actor handles are re-read from the state on every iteration rather than
+    captured once. They are views borrowing from the C++ State, and an
+    intercept rebuilds the target list -- a handle kept across a step would
+    dangle. Paths for destroyed targets simply stop growing.
+    """
     sim = Simulation(SimulationConfig(seed=seed, max_steps=max_steps))
-    agent_paths = [[] for _ in sim.state.agents]
-    target_paths = [[] for _ in sim.state.targets]
-    agents = list(sim.state.agents)
-    targets = list(sim.state.targets)
+    agent_paths = [[] for _ in range(len(sim.state.agents))]
+    target_paths = [[] for _ in range(len(sim.state.targets))]
 
     while not sim.done:
-        for path, actor in zip(agent_paths, agents):
+        for path, actor in zip(agent_paths, sim.state.agents):
             path.append(actor.pos.pair())
-        for path, actor in zip(target_paths, targets):
+        for path, actor in zip(target_paths, sim.state.targets):
             path.append(actor.pos.pair())
         sim.step()
 
