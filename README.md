@@ -115,9 +115,48 @@ Fleet configurations, PN, 500 seeds each:
 Δv is summed across the fleet, which is why it rises with interceptor count
 even as time-to-intercept falls.
 
-**Read the 100% honestly.** Success rate currently carries no information — the
-evader never reacts to being chased, so a 1.5× speed advantage is decisive under
-every law. Miss distance and Δv are the metrics doing real work today.
+### The evader, and what makes Pk a real metric
+
+The evader has an `evasiveness` knob in [0, 1]. At 0 it flies the original
+random wander and ignores the interceptor entirely; at 1 it flies a **drag** —
+135° off the sight line, part run and part beam.
+
+Getting that geometry right took measuring rather than guessing. Two pure
+behaviours both failed as a difficulty control:
+
+- **Beaming** (square across the sight line) defeats a predictive law: it
+  manufactures exactly the LOS rotation PN is trying to null, and dropped PN
+  to 94.2%. But it is the *worst* answer to pure pursuit — zero radial
+  velocity means the pursuer closes at its full speed, and pursuit stayed
+  pinned at 100% however hard the target beamed.
+- **Running** is the mirror image: it delays a pursuer but hands a predictive
+  law a clean collision triangle.
+
+Splitting the difference costs every law something. But even then, success
+rate barely moved — because the *scoring window* was wrong. With the default
+167 s cap, a 1.5× faster interceptor in a closed box always eventually wins;
+the target has nowhere to run. Pk only becomes informative once the
+interceptor has finite endurance.
+
+Success rate at a 20 s endurance cap (`--max-steps 1200`), 400 seeds:
+
+| Guidance | evasiveness 0 | 0.5 | 1.0 |
+| --- | --- | --- | --- |
+| `pursuit` | 96.5% | 95.8% | 97.2% |
+| `lead` | 99.0% | 97.8% | 97.2% |
+| `pn` | 92.5% | **85.8%** | **85.5%** |
+| `apn` | 91.2% | 84.5% | 87.2% |
+
+Which lands in the same place as the timing table above, by a different route:
+**on this scenario the simple laws win.** PN is slower to close on an
+incoherent target, and under a deadline slower means more leakers. PN's
+advantage is real but it lives in the coherent-manoeuvre geometry of the
+comparison figure, not here.
+
+Three separate measurements now say the same thing: the scenario, not the
+guidance, is what needs work next — a defended asset the evader is trying to
+reach would make leakage a meaningful objective in a way that a bare
+stern chase never will.
 
 ### Throughput
 

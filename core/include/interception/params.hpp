@@ -56,6 +56,11 @@ struct ScenarioParams {
     VehicleParams interceptor = defaultInterceptor();
     VehicleParams target = defaultTarget();
     GuidanceParams guidance{};
+
+    /// How much the evader reacts to being chased, in [0, 1].
+    /// 0 = pure random wander (the original, non-adversarial behaviour);
+    /// 1 = beam the nearest interceptor. See target.hpp.
+    double evasiveness = 0.0;
 };
 
 }  // namespace interception

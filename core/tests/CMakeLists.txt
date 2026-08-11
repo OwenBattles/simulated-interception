@@ -21,6 +21,7 @@ add_executable(interception_tests
     test_collision.cpp
     test_dynamics.cpp
     test_guidance.cpp
+    test_evader.cpp
     test_simulation.cpp
 )
 

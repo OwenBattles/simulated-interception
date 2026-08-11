@@ -152,7 +152,8 @@ PYBIND11_MODULE(_core, m) {
                          int num_targets, int min_obstacles, int max_obstacles,
                          std::optional<VehicleParams> interceptor,
                          std::optional<VehicleParams> target,
-                         std::optional<GuidanceParams> guidance) {
+                         std::optional<GuidanceParams> guidance,
+                         double evasiveness) {
                  ScenarioParams s;
                  s.worldWidthM = world_width_m;
                  s.worldHeightM = world_height_m;
@@ -163,6 +164,7 @@ PYBIND11_MODULE(_core, m) {
                  if (interceptor) s.interceptor = *interceptor;
                  if (target) s.target = *target;
                  if (guidance) s.guidance = *guidance;
+                 s.evasiveness = evasiveness;
                  return s;
              }),
              py::arg("world_width_m") = constants::kWorldWidthM,
@@ -171,7 +173,7 @@ PYBIND11_MODULE(_core, m) {
              py::arg("min_obstacles") = constants::kMinObstacleCount,
              py::arg("max_obstacles") = constants::kMaxObstacleCount,
              py::arg("interceptor") = py::none(), py::arg("target") = py::none(),
-             py::arg("guidance") = py::none())
+             py::arg("guidance") = py::none(), py::arg("evasiveness") = 0.0)
         .def_readwrite("world_width_m", &ScenarioParams::worldWidthM)
         .def_readwrite("world_height_m", &ScenarioParams::worldHeightM)
         .def_readwrite("num_agents", &ScenarioParams::numAgents)
@@ -180,7 +182,8 @@ PYBIND11_MODULE(_core, m) {
         .def_readwrite("max_obstacles", &ScenarioParams::maxObstacles)
         .def_readwrite("interceptor", &ScenarioParams::interceptor)
         .def_readwrite("target", &ScenarioParams::target)
-        .def_readwrite("guidance", &ScenarioParams::guidance);
+        .def_readwrite("guidance", &ScenarioParams::guidance)
+        .def_readwrite("evasiveness", &ScenarioParams::evasiveness);
 
     // --- actors ---------------------------------------------------------
     // Read-only views. These borrow from the State that owns them, so a

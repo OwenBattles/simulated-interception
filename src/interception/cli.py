@@ -54,6 +54,15 @@ def build_parser():
         help="navigation constant N for pn/apn (default: 4.0; 3-5 is typical)",
     )
     parser.add_argument(
+        "--evasiveness",
+        type=float,
+        default=0.0,
+        help=(
+            "how much the evader reacts to being chased, 0..1 "
+            "(0 = random wander, 1 = beam the interceptor; default: 0)"
+        ),
+    )
+    parser.add_argument(
         "--trials",
         type=int,
         default=0,
@@ -76,6 +85,7 @@ def scenario_from(args):
         num_agents=args.agents,
         num_targets=args.targets,
         guidance=GuidanceParams(law=args.guidance, nav_constant=args.nav_constant),
+        evasiveness=args.evasiveness,
     )
 
 
