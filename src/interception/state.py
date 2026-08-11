@@ -1,10 +1,10 @@
 import math
-import random
 
 from .collision import swept_hit
 from .fleet import Fleet
 from .obstacle import Obstacle
 from .params import ScenarioParams
+from .rng import Pcg32
 from .target import Target
 
 
@@ -24,7 +24,7 @@ class State:
         # A concrete seed is required. Callers that want an arbitrary world
         # draw a seed first and record it, so every run stays reproducible.
         self.seed = int(seed)
-        self.rng = random.Random(self.seed)
+        self.rng = Pcg32(self.seed)
 
         self.obstacles = []
         self.targets = []
@@ -56,7 +56,7 @@ class State:
         """
         if seed is not None:
             self.seed = int(seed)
-        self.rng = random.Random(self.seed)
+        self.rng = Pcg32(self.seed)
         self._build_world()
 
     def update(self, dt):

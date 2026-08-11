@@ -1,7 +1,6 @@
-import random
-
 import pytest
 
+from interception.rng import Pcg32
 from interception.vector import Vector
 
 
@@ -14,7 +13,7 @@ class FakeState:
     """
 
     def __init__(self, seed=0, width=1500.0, height=1000.0):
-        self.rng = random.Random(seed)
+        self.rng = Pcg32(seed)
         self.width = width
         self.height = height
         self.obstacles = []
