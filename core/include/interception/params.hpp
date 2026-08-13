@@ -40,7 +40,7 @@ VehicleParams defaultInterceptor();
 VehicleParams defaultTarget();
 
 struct GuidanceParams {
-    GuidanceLawKind law = GuidanceLawKind::ProportionalNavigation;
+    GuidanceLawKind law = GuidanceLawKind::Lead;
     /// N in a = N * Vc * lambda-dot; 3-5 is typical.
     double navConstant = 4.0;
 };
