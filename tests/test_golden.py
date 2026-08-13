@@ -104,10 +104,22 @@ def test_trajectory_matches_the_reference_engine():
     Sampled positions along the flight, not just the final observation.
 
     An end-of-episode check can pass while the path drifts and reconverges.
+
+    The law is taken from the fixture rather than left to the engine's
+    default. These positions were recorded under a specific law, so reading
+    the ambient default here would silently compare one law's flight against
+    another's trajectory the moment that default changed -- which is exactly
+    what happened when it did.
     """
     spec = GOLDEN["trajectory"]
     sim = _core.Simulation(
-        _core.SimulationConfig(seed=spec["seed"], max_steps=spec["max_steps"])
+        _core.SimulationConfig(
+            seed=spec["seed"],
+            max_steps=spec["max_steps"],
+            scenario=_core.ScenarioParams(
+                guidance=_core.GuidanceParams(law=spec["law"])
+            ),
+        )
     )
 
     samples = iter(spec["samples"])
